@@ -10,6 +10,7 @@ public class Candidate {
     private long id;
     private String name;
     private String email;
+
     @OneToMany(mappedBy = "candidate")
     private List<Experience> experience;
 
