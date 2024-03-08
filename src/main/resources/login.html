@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<form id="loginForm" onsubmit="login(event)">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Login</button>
+</form>
+
+<script>
+    async function login(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const username = formData.get('username');
+        const password = formData.get('password');
+
+        const response = await fetch('/authenticate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            window.location.href = '/user-info.html';
+        } else {
+            alert('Login failed');
+        }
+    }
+</script>
+</body>
+</html>
